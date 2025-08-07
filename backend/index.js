@@ -13,8 +13,10 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ["http://localhost:5173", "http://localhost:4173"];
+
 app.use(cors({
-    origin: "http://localhost:5173"
+    origin: allowedOrigins
 }));
 
 app.use(express.static(path.join(__dirname,'public')))
