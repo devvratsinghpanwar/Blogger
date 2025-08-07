@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ["http://localhost:5173", "http://localhost:4173"];
+const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ["*","http://localhost:5173", "http://localhost:4173","https://blogger-hazel-seven.vercel.app/"];
 
 app.use(cors({
     origin: allowedOrigins

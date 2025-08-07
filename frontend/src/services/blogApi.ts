@@ -1,5 +1,5 @@
 // Blog API service
-const API_BASE_URL = ["http://blogger-env.eba-b8kuifjp.ap-south-1.elasticbeanstalk.com/" , 'http://localhost:8000'];
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ["http://blogger-env.eba-b8kuifjp.ap-south-1.elasticbeanstalk.com/" , 'http://localhost:8000/api'];
 
 // Get auth token from localStorage
 const getAuthToken = () => {

@@ -1,5 +1,5 @@
 // API base URL - change this when you connect to your actual backend
-const API_BASE_URL = process.env.BACKEND_URL || 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
 // Types for API responses
 export interface User {
