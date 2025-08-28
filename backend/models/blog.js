@@ -96,7 +96,7 @@ blogSchema.pre('save', function(next) {
     // Calculate read time (average reading speed: 200 words per minute)
     if (this.isModified('content')) {
         const wordCount = this.content.split(/\s+/).length;
-        this.readTime = Math.ceil(wordCount / 200) || 1;
+        this.readTime = Math.ceil(wordCount / 150) || 1;
         
         // Generate excerpt if not provided
         if (!this.excerpt) {

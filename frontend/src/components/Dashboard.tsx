@@ -239,7 +239,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onSignOut }) => {
         <div className="bg-gradient-to-br from-[#350158] to-black rounded-2xl p-8 border border-gray-800">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-2xl font-bold text-white">Recent Posts</h3>
-            <button onClick={() => navigate('/blogs')} className="text-blue-400 hover:text-blue-300 font-medium">View All</button>
+            <button onClick={() => navigate('/all-blogs')} className="text-blue-400 hover:text-blue-300 font-medium">View All</button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogsLoading ? (

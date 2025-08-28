@@ -11,6 +11,7 @@ import EnhancedBlogView from "./components/EnhancedBlogView";
 import MyBlogs from "./components/MyBlogs";
 import { authAPI, type User } from "./services/api";
 import SearchResults from './components/SearchResult';
+import AllBlogs from './components/AllBlogs';
 
 // Type for user with token
 type AuthUser = User & { token: string };
@@ -116,6 +117,10 @@ function App() {
     if (!user) return <Navigate to="/" replace />;
     return <MyBlogs user={user} />;
   };
+  const AllBlogsWrapper = ()=>{
+    if(!user) return <Navigate to ='/' replace />
+    return <AllBlogs user={user} />
+  }
 
   if (loading) {
     return (
@@ -183,6 +188,10 @@ function App() {
         <Route
           path="/blog/:id"
           element={<BlogViewWrapper />}
+        />
+        <Route
+          path="/all-blogs"
+          element={<AllBlogsWrapper />}
         />
         {/* Catch all route - redirect to home */}
         <Route path="*" element={<Navigate to="/" replace />} />

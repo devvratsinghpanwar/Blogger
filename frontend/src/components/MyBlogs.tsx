@@ -1,7 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Edit, Trash2, Heart, MessageCircle, Eye, Plus} from 'lucide-react';
-import { blogAPI } from '../services/blogApi';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowLeft,
+  Edit,
+  Trash2,
+  Heart,
+  MessageCircle,
+  Eye,
+  Plus,
+} from "lucide-react";
+import { blogAPI } from "../services/blogApi";
 
 interface MyBlogsProps {
   user: {
@@ -38,11 +46,11 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
   const navigate = useNavigate();
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [selectedStatus, setSelectedStatus] = useState('');
-  console.log('User:', user.fullName);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  console.log("User:", user.fullName);
   useEffect(() => {
     fetchMyBlogs();
   }, [currentPage, selectedStatus]);
@@ -53,7 +61,7 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
       const response = await blogAPI.getMyBlogs({
         page: currentPage,
         limit: 9,
-        ...(selectedStatus && { status: selectedStatus })
+        ...(selectedStatus && { status: selectedStatus }),
       });
 
       if (response.success) {
@@ -61,7 +69,7 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
         setTotalPages(response.data.pagination.totalPages);
       }
     } catch (error: any) {
-      setError(error.message || 'Failed to fetch your blogs');
+      setError(error.message || "Failed to fetch your blogs");
     } finally {
       setLoading(false);
     }
@@ -76,20 +84,24 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
   };
 
   const handleCreateBlog = () => {
-    navigate('/create-blog');
+    navigate("/create-blog");
   };
 
   const handleBackToDashboard = () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const handleDeleteBlog = async (blogId: string, blogTitle: string) => {
-    if (window.confirm(`Are you sure you want to delete "${blogTitle}"? This action cannot be undone.`)) {
+    if (
+      window.confirm(
+        `Are you sure you want to delete "${blogTitle}"? This action cannot be undone.`
+      )
+    ) {
       try {
         await blogAPI.deleteBlog(blogId);
         fetchMyBlogs(); // Refresh the list
       } catch (error: any) {
-        setError(error.message || 'Failed to delete blog');
+        setError(error.message || "Failed to delete blog");
       }
     }
   };
@@ -107,10 +119,10 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -136,9 +148,8 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
                 <ArrowLeft className="w-5 h-5" />
                 Back to Dashboard
               </button>
-              <h1 className="text-2xl font-bold text-white">My Blogs</h1>
             </div>
-            
+            <h1 className="text-2xl font-bold text-white">My Blogs</h1>
             <div className="flex items-center gap-4">
               {/* Status Filter */}
               <select
@@ -155,7 +166,7 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
                 <option value="archived">Archived</option>
               </select>
 
-              <button 
+              <button
                 onClick={handleCreateBlog}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
               >
@@ -178,14 +189,15 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
         {blogs.length === 0 ? (
           <div className="text-center py-12">
             <div className="bg-gradient-to-br from-[#350158] to-black rounded-2xl p-12 border border-gray-800">
-              <h3 className="text-2xl font-bold text-white mb-4">No blogs found</h3>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                No blogs found
+              </h3>
               <p className="text-gray-300 mb-8">
-                {selectedStatus 
+                {selectedStatus
                   ? `You don't have any ${selectedStatus} blogs yet.`
-                  : "You haven't created any blogs yet. Start sharing your thoughts with the world!"
-                }
+                  : "You haven't created any blogs yet. Start sharing your thoughts with the world!"}
               </p>
-              <button 
+              <button
                 onClick={handleCreateBlog}
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 transform hover:scale-105"
               >
@@ -198,19 +210,19 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
             {/* Blogs Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {blogs.map((blog) => (
-                <div 
-                  key={blog._id} 
+                <div
+                  key={blog._id}
                   className="bg-gradient-to-br from-[#5b0c90] to-black rounded-xl overflow-hidden border border-gray-700 hover:border-gray-600 transition-all duration-200 transform hover:scale-105 cursor-pointer"
                   onClick={() => handleViewBlog(blog._id)}
                 >
                   {/* Blog Image or Placeholder */}
                   {blog.coverImage ? (
-                    <img 
-                      src={blog.coverImage} 
+                    <img
+                      src={blog.coverImage}
                       alt={blog.title}
                       className="w-full h-48 object-cover"
                       onError={(e) => {
-                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.style.display = "none";
                       }}
                     />
                   ) : (
@@ -226,25 +238,31 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
                         {blog.category}
                       </span>
                       <div className="flex items-center gap-2">
-                        <span className={`text-xs px-2 py-1 rounded-full ${
-                          blog.status === 'published' ? 'bg-green-600 text-white' :
-                          blog.status === 'draft' ? 'bg-yellow-600 text-white' :
-                          'bg-gray-600 text-white'
-                        }`}>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full ${
+                            blog.status === "published"
+                              ? "bg-green-600 text-white"
+                              : blog.status === "draft"
+                              ? "bg-yellow-600 text-white"
+                              : "bg-gray-600 text-white"
+                          }`}
+                        >
                           {blog.status}
                         </span>
-                        <span className="text-gray-400 text-xs">{formatDate(blog.createdAt)}</span>
+                        <span className="text-gray-400 text-xs">
+                          {formatDate(blog.createdAt)}
+                        </span>
                       </div>
                     </div>
-                    
+
                     <h4 className="text-lg font-semibold text-white mb-2 line-clamp-2">
                       {blog.title}
                     </h4>
-                    
+
                     <p className="text-gray-300 text-sm mb-4 line-clamp-2">
                       {blog.excerpt}
                     </p>
-                    
+
                     <div className="flex items-center justify-between text-gray-400 text-sm mb-4">
                       <div className="flex items-center gap-4">
                         <div className="flex items-center gap-1">
@@ -260,11 +278,16 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
                           <span>{blog.views}</span>
                         </div>
                       </div>
-                      <span className="text-xs">{formatReadTime(blog.readTime)}</span>
+                      <span className="text-xs">
+                        {formatReadTime(blog.readTime)}
+                      </span>
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
+                    <div
+                      className="flex gap-2"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <button
                         onClick={() => handleEditBlog(blog._id)}
                         className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors duration-200 flex items-center justify-center gap-2"
@@ -288,19 +311,23 @@ export const MyBlogs: React.FC<MyBlogsProps> = ({ user }) => {
             {totalPages > 1 && (
               <div className="flex justify-center items-center gap-2">
                 <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
                   disabled={currentPage === 1}
                   className="px-4 py-2 bg-gray-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors duration-200"
                 >
                   Previous
                 </button>
-                
+
                 <span className="text-white px-4">
                   Page {currentPage} of {totalPages}
                 </span>
-                
+
                 <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
                   disabled={currentPage === totalPages}
                   className="px-4 py-2 bg-gray-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors duration-200"
                 >
